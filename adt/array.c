@@ -62,3 +62,29 @@ int array_pop(struct Array *array) {
 
     return value;
 }
+
+int array_shift(struct Array *array) {
+    if (array -> next_index == 0) {
+        printf("Couldn't remove item from an empty array");
+        exit(EXIT_FAILURE);
+    }
+
+    int first_index = array -> values[0];
+    int *new_values = malloc(sizeof(int)*array -> size);
+
+    if (new_values == NULL) {
+        printf("Couldn't allocate memory to the array");
+        exit(EXIT_FAILURE);
+    }
+
+    for (short i = 1; i < array -> size; i++) {
+        new_values[i] = array -> values[i];
+    }
+
+    free(array -> values);
+
+    array -> values = new_values;
+    array -> next_index -= 1;
+
+    return first_index;
+}

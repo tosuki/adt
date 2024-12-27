@@ -1,7 +1,6 @@
 #include <malloc.h>
 
-#include <stdio.h>
-#include <stdlib.h>
+#include "./lib/error.h"
 
 #define DYNAMIC_ARRAY_REALLOC 2 //previous size * 2
 
@@ -17,8 +16,7 @@ struct Array create_array(int size) {
     array.values = malloc(sizeof(int)*size);
 
     if (array.values == NULL) {
-        printf("Couldn't allocate memory for the array");
-        exit(EXIT_FAILURE);
+        abort("Couldn't allocate memory for the array", 1);
     }
 
     array.size = size;
@@ -32,8 +30,7 @@ void array_realloc(struct Array *array) {
     array -> values = realloc(array -> values, sizeof(int)*(array -> size));
 
     if (array -> values == NULL) {
-        printf("Couldn't reallocate memory to the array");
-        exit(EXIT_FAILURE);
+        abort("Couldn't reallocate memory to the array", 1);
     }
 }
 
@@ -50,8 +47,7 @@ int array_push(struct Array *array, int value) {
 
 int array_pop(struct Array *array) {
     if (array -> next_index == 0) {
-        printf("Couldn't remove item from an empty array");
-        exit(EXIT_FAILURE);
+        abort("Couldn't remove item from an empty array", 1);
     }
 
     int last_used_index = array -> next_index - 1;
@@ -65,16 +61,14 @@ int array_pop(struct Array *array) {
 
 int array_shift(struct Array *array) {
     if (array -> next_index == 0) {
-        printf("Couldn't remove item from an empty array");
-        exit(EXIT_FAILURE);
+        abort("Couldn't remove item from an empty array", 1);
     }
 
     int first_index = array -> values[0];
     int *new_values = malloc(sizeof(int)*array -> size);
 
     if (new_values == NULL) {
-        printf("Couldn't allocate memory to the array");
-        exit(EXIT_FAILURE);
+        abort("Couldn't allocate memory to the array", 1);
     }
 
     for (short i = 1; i < array -> size; i++) {
